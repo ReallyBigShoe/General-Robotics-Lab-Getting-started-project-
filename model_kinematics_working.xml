@@ -1,0 +1,296 @@
+<mujoco model="General Robotics Robot">
+
+    <compiler angle="degree" meshdir="Assets"/>
+
+    <!-- Kinematics test only: no gravity yet -->
+    <option timestep="0.002" gravity="0 0 0"/>
+
+    <!-- ====================================================== -->
+    <!-- ASSETS                                                 -->
+    <!-- ====================================================== -->
+
+    <asset>
+
+        <mesh name="base_mesh" file="base_link.stl"/>
+
+        <mesh name="leg_fl_mesh" file="Leg_FL.stl"/>
+        <mesh name="leg_fr_mesh" file="Leg_FR.stl"/>
+        <mesh name="leg_bl_mesh" file="Leg_BL.stl"/>
+        <mesh name="leg_br_mesh" file="Leg_BR.stl"/>
+
+        <mesh name="wheel_fl_mesh" file="Wheel_FL.stl"/>
+        <mesh name="wheel_fr_mesh" file="Wheel_FR.stl"/>
+        <mesh name="wheel_bl_mesh" file="Wheel_BL.stl"/>
+        <mesh name="wheel_br_mesh" file="Wheel_BR.stl"/>
+
+    </asset>
+
+
+    <!-- ====================================================== -->
+    <!-- WORLD                                                  -->
+    <!-- ====================================================== -->
+
+    <worldbody>
+
+        <!-- Floor is only a visual reference for now -->
+        <geom name="floor"
+              type="plane"
+              size="2 2 0.1"
+              pos="0 0 0"
+              contype="0"
+              conaffinity="0"/>
+
+
+        <!-- ================================================== -->
+        <!-- COMPLETE ROBOT                                     -->
+        <!--                                                    -->
+        <!-- Entire assembly raised 83.73 mm.                   -->
+        <!-- Gives wheels approximately 5 mm ground clearance.  -->
+        <!-- ================================================== -->
+
+        <body name="robot" pos="0 0 0.08373">
+
+
+            <!-- ============================================== -->
+            <!-- CHASSIS                                        -->
+            <!-- ============================================== -->
+
+            <body name="base_link">
+
+                <geom name="base_visual"
+                      type="mesh"
+                      mesh="base_mesh"
+                      contype="0"
+                      conaffinity="0"/>
+
+
+                <!-- ========================================== -->
+                <!-- FRONT RIGHT                                -->
+                <!-- ========================================== -->
+
+                <body name="Leg_FR"
+                      pos="0.010 0.065 0.0225">
+
+                    <joint name="hip_FR"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="2"/>
+
+                    <geom name="leg_FR_visual"
+                          type="mesh"
+                          mesh="leg_fr_mesh"
+                          pos="-0.010 -0.065 -0.0225"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <body name="Wheel_FR"
+                          pos="-0.005 0.051075 -0.072731">
+
+                        <joint name="wheel_FR"
+                               type="hinge"
+                               axis="1 0 0"
+                               damping="1"/>
+
+                        <geom name="wheel_FR_visual"
+                              type="mesh"
+                              mesh="wheel_fr_mesh"
+                              pos="-0.005 -0.116075 0.050231"
+                              contype="0"
+                              conaffinity="0"/>
+
+                    </body>
+
+                </body>
+
+
+                <!-- ========================================== -->
+                <!-- FRONT LEFT                                 -->
+                <!-- ========================================== -->
+
+                <body name="Leg_FL"
+                      pos="-0.150 0.065 0.0225">
+
+                    <joint name="hip_FL"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="2"/>
+
+                    <geom name="leg_FL_visual"
+                          type="mesh"
+                          mesh="leg_fl_mesh"
+                          pos="0.150 -0.065 -0.0225"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <body name="Wheel_FL"
+                          pos="0.005 0.051075 -0.072731">
+
+                        <joint name="wheel_FL"
+                               type="hinge"
+                               axis="1 0 0"
+                               damping="1"/>
+
+                        <geom name="wheel_FL_visual"
+                              type="mesh"
+                              mesh="wheel_fl_mesh"
+                              pos="0.145 -0.116075 0.050231"
+                              contype="0"
+                              conaffinity="0"/>
+
+                    </body>
+
+                </body>
+
+
+                <!-- ========================================== -->
+                <!-- BACK RIGHT                                 -->
+                <!-- ========================================== -->
+
+                <body name="Leg_BR"
+                      pos="0.010 -0.065 0.0225">
+
+                    <joint name="hip_BR"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="2"/>
+
+                    <geom name="leg_BR_visual"
+                          type="mesh"
+                          mesh="leg_br_mesh"
+                          pos="-0.010 0.065 -0.0225"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <body name="Wheel_BR"
+                          pos="-0.005 -0.051075 -0.072731">
+
+                        <joint name="wheel_BR"
+                               type="hinge"
+                               axis="1 0 0"
+                               damping="1"/>
+
+                        <geom name="wheel_BR_visual"
+                              type="mesh"
+                              mesh="wheel_br_mesh"
+                              pos="-0.005 0.116075 0.050231"
+                              contype="0"
+                              conaffinity="0"/>
+
+                    </body>
+
+                </body>
+
+
+                <!-- ========================================== -->
+                <!-- BACK LEFT                                  -->
+                <!-- ========================================== -->
+
+                <body name="Leg_BL"
+                      pos="-0.150 -0.065 0.0225">
+
+                    <joint name="hip_BL"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="2"/>
+
+                    <geom name="leg_BL_visual"
+                          type="mesh"
+                          mesh="leg_bl_mesh"
+                          pos="0.150 0.065 -0.0225"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <body name="Wheel_BL"
+                          pos="0.005 -0.051075 -0.072731">
+
+                        <joint name="wheel_BL"
+                               type="hinge"
+                               axis="1 0 0"
+                               damping="1"/>
+
+                        <geom name="wheel_BL_visual"
+                              type="mesh"
+                              mesh="wheel_bl_mesh"
+                              pos="0.145 0.116075 0.050231"
+                              contype="0"
+                              conaffinity="0"/>
+
+                    </body>
+
+                </body>
+
+            </body>
+
+        </body>
+
+    </worldbody>
+
+
+    <!-- ====================================================== -->
+    <!-- TEMPORARY POSITION ACTUATORS                           -->
+    <!--                                                        -->
+    <!-- These are only for testing the eight joints.           -->
+    <!-- Lower kp makes the motion less aggressive.             -->
+    <!-- Joint damping above suppresses oscillation.             -->
+    <!-- ====================================================== -->
+
+    <actuator>
+
+        <!-- Front Right -->
+
+        <position name="test_hip_FR"
+                  joint="hip_FR"
+                  kp="5"
+                  ctrlrange="-1.57 1.57"/>
+
+        <position name="test_wheel_FR"
+                  joint="wheel_FR"
+                  kp="5"
+                  ctrlrange="-3.14 3.14"/>
+
+
+        <!-- Front Left -->
+
+        <position name="test_hip_FL"
+                  joint="hip_FL"
+                  kp="5"
+                  ctrlrange="-1.57 1.57"/>
+
+        <position name="test_wheel_FL"
+                  joint="wheel_FL"
+                  kp="5"
+                  ctrlrange="-3.14 3.14"/>
+
+
+        <!-- Back Right -->
+
+        <position name="test_hip_BR"
+                  joint="hip_BR"
+                  kp="5"
+                  ctrlrange="-1.57 1.57"/>
+
+        <position name="test_wheel_BR"
+                  joint="wheel_BR"
+                  kp="5"
+                  ctrlrange="-3.14 3.14"/>
+
+
+        <!-- Back Left -->
+
+        <position name="test_hip_BL"
+                  joint="hip_BL"
+                  kp="5"
+                  ctrlrange="-1.57 1.57"/>
+
+        <position name="test_wheel_BL"
+                  joint="wheel_BL"
+                  kp="5"
+                  ctrlrange="-3.14 3.14"/>
+
+    </actuator>
+
+</mujoco>

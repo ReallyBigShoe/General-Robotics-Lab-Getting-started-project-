@@ -1,0 +1,512 @@
+<mujoco model="General Robotics Robot">
+
+    <!-- ====================================================== -->
+    <!-- COMPILER / SIMULATION SETTINGS                          -->
+    <!-- ====================================================== -->
+
+    <compiler angle="degree"
+              meshdir="Assets"
+              inertiafromgeom="false"/>
+
+    <option timestep="0.001"
+            gravity="0 0 -9.81"
+            integrator="implicitfast"/>
+
+
+    <!-- ====================================================== -->
+    <!-- VISUAL MESHES                                          -->
+    <!-- ====================================================== -->
+
+    <asset>
+
+        <mesh name="base_mesh"
+              file="base_link.stl"/>
+
+        <mesh name="leg_fl_mesh"
+              file="Leg_FL.stl"/>
+
+        <mesh name="leg_fr_mesh"
+              file="Leg_FR.stl"/>
+
+        <mesh name="leg_bl_mesh"
+              file="Leg_BL.stl"/>
+
+        <mesh name="leg_br_mesh"
+              file="Leg_BR.stl"/>
+
+        <mesh name="wheel_fl_mesh"
+              file="Wheel_FL.stl"/>
+
+        <mesh name="wheel_fr_mesh"
+              file="Wheel_FR.stl"/>
+
+        <mesh name="wheel_bl_mesh"
+              file="Wheel_BL.stl"/>
+
+        <mesh name="wheel_br_mesh"
+              file="Wheel_BR.stl"/>
+
+    </asset>
+
+
+    <!-- ====================================================== -->
+    <!-- WORLD                                                   -->
+    <!-- ====================================================== -->
+
+    <worldbody>
+
+        <!-- Ground -->
+        <geom name="floor"
+              type="plane"
+              pos="0 0 0"
+              size="2 2 0.1"
+              friction="1 0.05 0.01"
+              contype="1"
+              conaffinity="1"/>
+
+
+        <!-- ================================================== -->
+        <!-- BASE / FREE-FLOATING ROBOT                          -->
+        <!--                                                    -->
+        <!-- The Fusion robot center was 70 mm from the Fusion  -->
+        <!-- origin. The STLs were intentionally left in that   -->
+        <!-- original coordinate system.                        -->
+        <!--                                                    -->
+        <!-- Robot begins 83.73 mm above the floor, which gives -->
+        <!-- the 56.997 mm wheels approximately 5 mm clearance. -->
+        <!-- ================================================== -->
+
+        <body name="base_link"
+              pos="0 0 0.08373">
+
+            <!-- Free body: 6 degrees of freedom -->
+            <freejoint name="root_freejoint"/>
+
+
+            <!-- ============================================== -->
+            <!-- BASE VISUAL                                    -->
+            <!-- ============================================== -->
+
+            <geom name="base_visual"
+                  type="mesh"
+                  mesh="base_mesh"
+                  contype="0"
+                  conaffinity="0"/>
+
+
+            <!-- ============================================== -->
+            <!-- BASE INERTIAL PROPERTIES                       -->
+            <!--                                                    -->
+            <!-- Fusion COM:                                    -->
+            <!-- (-70.214, -0.712, 50.450) mm                    -->
+            <!--                                                    -->
+            <!-- Mass: 2188.379 g = 2.188379 kg                 -->
+            <!-- ============================================== -->
+
+            <inertial
+                pos="-0.070214 -0.000712 0.050450"
+                mass="2.188379"
+                fullinertia="
+                    0.076070
+                    0.085530
+                    0.122000
+                    0.000022967131
+                    -0.000009709464
+                    -0.000011921456"/>
+
+
+            <!-- ================================================== -->
+            <!-- FRONT RIGHT LEG                                     -->
+            <!-- ================================================== -->
+
+            <body name="Leg_FR"
+                  pos="0.010 0.065 0.0225">
+
+                <!-- Fusion joint limits: approximately -45 deg to -->
+                <!-- +75 deg for this mirrored side.               -->
+                <joint name="hip_FR"
+                       type="hinge"
+                       axis="1 0 0"
+                       damping="2"
+                       limited="true"
+                       range="-45 75"/>
+
+
+                <geom name="leg_FR_visual"
+                      type="mesh"
+                      mesh="leg_fr_mesh"
+                      pos="-0.010 -0.065 -0.0225"
+                      contype="0"
+                      conaffinity="0"/>
+
+
+                <!-- FR leg mass/inertia from Fusion -->
+                <!-- COM relative to hip:
+                     (39.288, 29.282, -41.676) mm -->
+
+                <inertial
+                    pos="0.039288 0.029282 -0.041676"
+                    mass="0.082136"
+                    fullinertia="
+                        0.000136800
+                        0.000116800
+                        0.000075936346
+                        -0.000007677130
+                        0.000010997569
+                        0.000057220861"/>
+
+
+                <!-- ========================================== -->
+                <!-- FRONT RIGHT WHEEL                         -->
+                <!-- ========================================== -->
+
+                <body name="Wheel_FR"
+                      pos="-0.005 0.051075 -0.072731">
+
+                    <joint name="wheel_FR"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="0.1"/>
+
+
+                    <geom name="wheel_FR_visual"
+                          type="mesh"
+                          mesh="wheel_fr_mesh"
+                          pos="-0.005 -0.116075 0.050231"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <!-- Simple cylindrical collision model -->
+                    <geom name="wheel_FR_collision"
+                          type="cylinder"
+                          pos="0 0 0"
+                          euler="0 90 0"
+                          size="0.0284985 0.010"
+                          friction="1 0.05 0.01"
+                          contype="1"
+                          conaffinity="1"/>
+
+
+                    <!-- Wheel COM is approximately 1.355 mm -->
+                    <!-- to the negative X side of the axle. -->
+
+                    <inertial
+                        pos="-0.001355 0 0"
+                        mass="0.038316"
+                        fullinertia="
+                            0.000018581992
+                            0.000011054022
+                            0.000011053486
+                            0
+                            0
+                            0.000000001523"/>
+
+                </body>
+
+            </body>
+
+
+            <!-- ================================================== -->
+            <!-- FRONT LEFT LEG                                      -->
+            <!-- ================================================== -->
+
+            <body name="Leg_FL"
+                  pos="-0.150 0.065 0.0225">
+
+                <joint name="hip_FL"
+                       type="hinge"
+                       axis="1 0 0"
+                       damping="2"
+                       limited="true"
+                       range="-75 45"/>
+
+
+                <geom name="leg_FL_visual"
+                      type="mesh"
+                      mesh="leg_fl_mesh"
+                      pos="0.150 -0.065 -0.0225"
+                      contype="0"
+                      conaffinity="0"/>
+
+
+                <!-- FL leg mass/inertia from Fusion -->
+                <!-- COM relative to hip:
+                     (-37.573, 35.469, -50.682) mm -->
+
+                <inertial
+                    pos="-0.037573 0.035469 -0.050682"
+                    mass="0.141223"
+                    fullinertia="
+                        0.000172400
+                        0.000145600
+                        0.000093954807
+                        0.000005261590
+                        -0.000007566613
+                        0.000071755082"/>
+
+
+                <!-- ========================================== -->
+                <!-- FRONT LEFT WHEEL                           -->
+                <!-- ========================================== -->
+
+                <body name="Wheel_FL"
+                      pos="0.005 0.051075 -0.072731">
+
+                    <joint name="wheel_FL"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="0.1"/>
+
+
+                    <geom name="wheel_FL_visual"
+                          type="mesh"
+                          mesh="wheel_fl_mesh"
+                          pos="0.145 -0.116075 0.050231"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <geom name="wheel_FL_collision"
+                          type="cylinder"
+                          pos="0 0 0"
+                          euler="0 90 0"
+                          size="0.0284985 0.010"
+                          friction="1 0.05 0.01"
+                          contype="1"
+                          conaffinity="1"/>
+
+
+                    <!-- COM is +1.355 mm in local X -->
+
+                    <inertial
+                        pos="0.001355 0 0"
+                        mass="0.038316"
+                        fullinertia="
+                            0.000018581992
+                            0.000011054022
+                            0.000011053486
+                            0
+                            0
+                            0.000000001523"/>
+
+                </body>
+
+            </body>
+
+
+            <!-- ================================================== -->
+            <!-- BACK RIGHT LEG                                      -->
+            <!-- ================================================== -->
+
+            <body name="Leg_BR"
+                  pos="0.010 -0.065 0.0225">
+
+                <joint name="hip_BR"
+                       type="hinge"
+                       axis="1 0 0"
+                       damping="2"
+                       limited="true"
+                       range="-45 75"/>
+
+
+                <geom name="leg_BR_visual"
+                      type="mesh"
+                      mesh="leg_br_mesh"
+                      pos="-0.010 0.065 -0.0225"
+                      contype="0"
+                      conaffinity="0"/>
+
+
+                <!-- BR leg -->
+                <!-- COM relative to hip:
+                     (39.288, -29.282, -41.676) mm -->
+
+                <inertial
+                    pos="0.039288 -0.029282 -0.041676"
+                    mass="0.082135"
+                    fullinertia="
+                        0.000136800
+                        0.000116800
+                        0.000075935966
+                        0.000007676943
+                        0.000010997300
+                        -0.000057220600"/>
+
+
+                <!-- ========================================== -->
+                <!-- BACK RIGHT WHEEL                            -->
+                <!-- ========================================== -->
+
+                <body name="Wheel_BR"
+                      pos="-0.005 -0.051075 -0.072731">
+
+                    <joint name="wheel_BR"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="0.1"/>
+
+
+                    <geom name="wheel_BR_visual"
+                          type="mesh"
+                          mesh="wheel_br_mesh"
+                          pos="-0.005 0.116075 0.050231"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <geom name="wheel_BR_collision"
+                          type="cylinder"
+                          pos="0 0 0"
+                          euler="0 90 0"
+                          size="0.0284985 0.010"
+                          friction="1 0.05 0.01"
+                          contype="1"
+                          conaffinity="1"/>
+
+
+                    <!-- COM is -1.355 mm in local X -->
+
+                    <inertial
+                        pos="-0.001355 0 0"
+                        mass="0.038316"
+                        fullinertia="
+                            0.000018581992
+                            0.000011054022
+                            0.000011053486
+                            0
+                            0
+                            -0.000000001523"/>
+
+                </body>
+
+            </body>
+
+
+            <!-- ================================================== -->
+            <!-- BACK LEFT LEG                                       -->
+            <!-- ================================================== -->
+
+            <body name="Leg_BL"
+                  pos="-0.150 -0.065 0.0225">
+
+                <joint name="hip_BL"
+                       type="hinge"
+                       axis="1 0 0"
+                       damping="2"
+                       limited="true"
+                       range="-75 45"/>
+
+
+                <geom name="leg_BL_visual"
+                      type="mesh"
+                      mesh="leg_bl_mesh"
+                      pos="0.150 0.065 -0.0225"
+                      contype="0"
+                      conaffinity="0"/>
+
+
+                <!-- BL leg -->
+                <!-- COM relative to hip:
+                     (-39.288, -29.282, -41.676) mm -->
+
+                <inertial
+                    pos="-0.039288 -0.029282 -0.041676"
+                    mass="0.082135"
+                    fullinertia="
+                        0.000136800
+                        0.000116800
+                        0.000075935772
+                        -0.000007677012
+                        -0.000010997397
+                        -0.000057220295"/>
+
+
+                <!-- ========================================== -->
+                <!-- BACK LEFT WHEEL                             -->
+                <!-- ========================================== -->
+
+                <body name="Wheel_BL"
+                      pos="0.005 -0.051075 -0.072731">
+
+                    <joint name="wheel_BL"
+                           type="hinge"
+                           axis="1 0 0"
+                           damping="0.1"/>
+
+
+                    <geom name="wheel_BL_visual"
+                          type="mesh"
+                          mesh="wheel_bl_mesh"
+                          pos="0.145 0.116075 0.050231"
+                          contype="0"
+                          conaffinity="0"/>
+
+
+                    <geom name="wheel_BL_collision"
+                          type="cylinder"
+                          pos="0 0 0"
+                          euler="0 90 0"
+                          size="0.0284985 0.010"
+                          friction="1 0.05 0.01"
+                          contype="1"
+                          conaffinity="1"/>
+
+
+                    <!-- COM is +1.355 mm in local X -->
+
+                    <inertial
+                        pos="0.001355 0 0"
+                        mass="0.038316"
+                        fullinertia="
+                            0.000018581992
+                            0.000011054022
+                            0.000011053486
+                            0
+                            0
+                            -0.000000001523"/>
+
+                </body>
+
+            </body>
+
+        </body>
+
+    </worldbody>
+
+
+    <!-- ====================================================== -->
+    <!-- HIP POSITION ACTUATORS                                 -->
+    <!--                                                        -->
+    <!-- These temporarily hold the leg joints near their       -->
+    <!-- Fusion rest position while we verify gravity/contact.   -->
+    <!--                                                        -->
+    <!-- The wheels are NOT position-controlled so they remain  -->
+    <!-- free to rotate when we later add driving forces.        -->
+    <!-- ====================================================== -->
+
+    <actuator>
+
+        <position name="hip_motor_FR"
+                  joint="hip_FR"
+                  kp="10"
+                  ctrlrange="-0.785 1.309"/>
+
+        <position name="hip_motor_FL"
+                  joint="hip_FL"
+                  kp="10"
+                  ctrlrange="-1.309 0.785"/>
+
+        <position name="hip_motor_BR"
+                  joint="hip_BR"
+                  kp="10"
+                  ctrlrange="-0.785 1.309"/>
+
+        <position name="hip_motor_BL"
+                  joint="hip_BL"
+                  kp="10"
+                  ctrlrange="-1.309 0.785"/>
+
+    </actuator>
+
+</mujoco>
