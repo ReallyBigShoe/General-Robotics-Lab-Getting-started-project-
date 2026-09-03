@@ -525,7 +525,7 @@ The simulation could then serve not only as a design environment but also as a c
 
 Wheel-based differential turning already provides a straightforward method of changing heading, so dedicated legged turning was not required for the current demonstration.
 
-However, leg-assisted turning, alternative support sequences, obstacle negotiation, and additional wheel-leg gaits remain interesting possibilities.
+However, leg-assisted turning, alternative support sequences, obstacle negotiation, and additional wheel-leg gaits remain interesting possibilities. I really look forward to trying out leaping motion. That would combine all 4 legs, differing from the 2 leg propulsion convention I was following in the current simulations.
 
 
 ## Development Process and AI Assistance
